@@ -1,0 +1,5 @@
+rootProject.name = 'pilathy'
+include 'pilathy-api'
+include 'pilathy-domain'
+include 'pilathy-infrastructure'
+
