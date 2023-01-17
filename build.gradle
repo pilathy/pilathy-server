@@ -1,19 +1,87 @@
 plugins {
-    id 'java'
+    id "org.springframework.boot" version "2.5.14"
+    id "io.spring.dependency-management" version "1.1.0"
 }
 
-group 'com'
-version '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
+ext {
+    springCloudVersion = "2020.0.4"
+    swaggerVersion = "3.0.0"
+    springRetryVersion = "1.3.4"
+    springmockkVersion = "3.1.2"
+    springCloudAwsVersion = "2.2.6.RELEASE"
+    embeddedRedisVersion = "0.7.2"
+    embeddedMongoVersion = "3.5.3"
+    commonsLang3Version = "3.12.0"
+    commonsCodecVersion = "1.15"
+    firebaseAdminVersion = "9.1.1"
+    resilience4jVersion = "1.7.1"
+    queryDslVersion = "5.0.0"
+    springBatchTestVersion = "4.3.7"
+    redissonVersion = "3.19.1"
+    commonsIoVersion = "2.11.0"
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+allprojects {
+    group = "com.pilathy"
+
+    repositories {
+        mavenCentral()
+    }
 }
 
-test {
-    useJUnitPlatform()
+subprojects {
+    apply {
+        plugin "idea"
+        plugin "java-library"
+        plugin "org.springframework.boot"
+        plugin "io.spring.dependency-management"
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
+    dependencies {
+        // Spring Boot Validation
+        implementation("org.springframework.boot:spring-boot-starter-validation")
+
+        // Spring Boot Configuration Processor
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+        // Spring AOP
+        implementation("org.springframework.boot:spring-boot-starter-aop")
+
+        // Spring Retry
+        implementation("org.springframework.retry:spring-retry:${springRetryVersion}")
+
+        // Lombok
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
+        testCompileOnly("org.projectlombok:lombok")
+        testAnnotationProcessor("org.projectlombok:lombok")
+
+        // Jackson
+        implementation("org.springframework.boot:spring-boot-starter-json")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+        // Test
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+        // Spring MockK
+        testImplementation("com.ninja-squad:springmockk:${springmockkVersion}")
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
 }
