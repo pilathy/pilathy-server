@@ -1,6 +1,6 @@
 rootProject.name = 'pilathy'
 
-include 'pilathy-api:pilathy-api-user-service'
+include 'pilathy-api:pilathy-api-user'
 include 'pilathy-api:pilathy-api-center-service'
 
 include 'pilathy-infrastructure'
