@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,16 +32,17 @@ public class Membership extends BaseEntity {
     private Center center;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Membership(DateInterval dateInterval, int remainCount, User user, Center center) {
-        this.dateInterval = dateInterval;
+    private Membership(LocalDate startDate, LocalDate endDate, int remainCount, User user, Center center) {
+        this.dateInterval = DateInterval.of(startDate, endDate);
         this.remainCount = remainCount;
         this.user = user;
         this.center = center;
     }
 
-    public static Membership of(DateInterval dateInterval, int remainCount, User user, Center center) {
+    public static Membership of(LocalDate startDate, LocalDate endDate, int remainCount, User user, Center center) {
         return Membership.builder()
-                .dateInterval(dateInterval)
+                .startDate(startDate)
+                .endDate(endDate)
                 .remainCount(remainCount)
                 .user(user)
                 .center(center)
