@@ -45,7 +45,7 @@ public class Center extends BaseEntity {
     @OneToMany(mappedBy = "center")
     private List<Membership> memberships = new ArrayList<>();
 
-    @Builder(access = AccessLevel.PRIVATE)
+    @Builder(access = AccessLevel.PACKAGE)
     private Center(Admin admin, String name, Address address, String phone, String img, String description) {
         this.admin = admin;
         this.name = name;
@@ -64,6 +64,14 @@ public class Center extends BaseEntity {
                 .img(img)
                 .description(description)
                 .build();
+    }
+
+    public void updateCenter(String name, Address address, String phone, String img, String description) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.img = img;
+        this.description = description;
     }
 
 }
