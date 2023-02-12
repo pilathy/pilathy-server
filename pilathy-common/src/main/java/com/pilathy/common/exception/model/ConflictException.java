@@ -2,7 +2,7 @@ package com.pilathy.common.exception.model;
 
 import com.pilathy.common.exception.ErrorCode;
 
-public class ConflictException extends PilathyBaseexception {
+public class ConflictException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E409_DUPLICATE;
 

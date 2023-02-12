@@ -4,16 +4,16 @@ import com.pilathy.common.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public abstract class PilathyBaseexception extends RuntimeException {
+public abstract class PilathyBaseException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    protected PilathyBaseexception(String message, ErrorCode errorCode) {
+    protected PilathyBaseException(String message, ErrorCode errorCode) {
         super(message);
         this.errorCode = errorCode;
     }
 
-    protected PilathyBaseexception(String message, ErrorCode errorCode, Throwable cause) {
+    protected PilathyBaseException(String message, ErrorCode errorCode, Throwable cause) {
         super(message, cause);
         this.errorCode = errorCode;
     }

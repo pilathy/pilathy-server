@@ -2,7 +2,7 @@ package com.pilathy.common.exception.model;
 
 import com.pilathy.common.exception.ErrorCode;
 
-public class ForbiddenException extends PilathyBaseexception {
+public class ForbiddenException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E403_FORBIDDEN;
 

@@ -4,7 +4,7 @@ import com.pilathy.common.exception.ErrorCode;
 
 import static com.pilathy.common.exception.ErrorCode.E502_BAD_GATEWAY;
 
-public class BadGatewayException extends PilathyBaseexception {
+public class BadGatewayException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = E502_BAD_GATEWAY;
 

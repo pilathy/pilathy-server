@@ -2,7 +2,7 @@ package com.pilathy.common.exception.model;
 
 import com.pilathy.common.exception.ErrorCode;
 
-public class InvalidException extends PilathyBaseexception {
+public class InvalidException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E400_INVALID;
 

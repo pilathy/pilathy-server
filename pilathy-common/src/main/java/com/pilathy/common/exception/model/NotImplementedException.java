@@ -2,7 +2,7 @@ package com.pilathy.common.exception.model;
 
 import com.pilathy.common.exception.ErrorCode;
 
-public class NotImplementedException extends PilathyBaseexception {
+public class NotImplementedException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E501_NOT_SUPPORTED;
 

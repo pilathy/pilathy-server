@@ -2,7 +2,7 @@ package com.pilathy.common.exception.model;
 
 import com.pilathy.common.exception.ErrorCode;
 
-public class InternalServerException extends PilathyBaseexception {
+public class InternalServerException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E500_INTERNAL_SERVER;
 
