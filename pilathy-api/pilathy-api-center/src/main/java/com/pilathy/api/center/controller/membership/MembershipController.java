@@ -30,7 +30,7 @@ public class MembershipController {
             @PathVariable Long membershipId,
             @RequestBody MembershipUpdateRequest request
     ) {
-        MembershipResponse response = membershipService.updateMembership(membershipId, request);
+        MembershipResponse response = membershipService.updateMembership(request, membershipId);
         // TODO : updateMembership validate
         return ApiResponse.success(response);
     }
