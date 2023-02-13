@@ -6,4 +6,5 @@ include 'pilathy-api:pilathy-api-center'
 include 'pilathy-infrastructure'
 
 include 'pilathy-domain:pilathy-domain-rds'
+include 'pilathy-domain:pilathy-domain-service'
 include 'pilathy-common'
