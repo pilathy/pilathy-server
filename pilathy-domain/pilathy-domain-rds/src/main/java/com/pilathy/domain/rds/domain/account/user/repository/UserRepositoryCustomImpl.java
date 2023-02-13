@@ -20,4 +20,13 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .fetchOne();
     }
 
+    @Override
+    public boolean existsUserByEmail(String userEmail) {
+        return queryFactory.selectFrom(user)
+                .where(
+                        user.email.eq(userEmail)
+                )
+                .fetchFirst() != null;
+    }
+
 }
