@@ -1,4 +1,10 @@
 dependencies {
+
+    // Commons-io
+    api("commons-io:commons-io:${commonsIoVersion}")
+
+    // TestFixtures
+    testImplementation(testFixtures(project(":pilathy-common")))
 }
 
 bootJar {
