@@ -1,5 +1,7 @@
 package com.pilathy.domain.rds.domain.common;
 
+import com.pilathy.common.exception.ErrorCode;
+import com.pilathy.common.exception.model.InvalidException;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -33,10 +35,9 @@ public class DateInterval {
     }
 
     private static void validateInterval(LocalDate startDate, LocalDate endDate) {
-        // TODO 예외 처리
-//        if (startDate.isAfter(endDate)) {
-//            throw new InvalidException(String.format("시작 날짜(%s)가 종료 날짜(%s)보다 이후 일 수 없습니", startDate, endDate), ErrorCode.E400_INVALID_DATE_TIME_INTERVAL);
-//        }
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidException(String.format("시작 날짜(%s)가 종료 날짜(%s)보다 이후 일 수 없습니", startDate, endDate), ErrorCode.E400_INVALID_DATE_TIME_INTERVAL);
+        }
     }
 
 }
