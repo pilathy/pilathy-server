@@ -31,7 +31,7 @@ public class Membership extends BaseEntity {
     @JoinColumn(name = "center_id")
     private Center center;
 
-    @Builder(access = AccessLevel.PRIVATE)
+    @Builder(access = AccessLevel.PACKAGE)
     private Membership(LocalDate startDate, LocalDate endDate, int remainCount, User user, Center center) {
         this.dateInterval = DateInterval.of(startDate, endDate);
         this.remainCount = remainCount;
@@ -47,6 +47,11 @@ public class Membership extends BaseEntity {
                 .user(user)
                 .center(center)
                 .build();
+    }
+
+    public void updateMembership(LocalDate startDate, LocalDate endDate, int remainCount) {
+        this.dateInterval = DateInterval.of(startDate, endDate);
+        this.remainCount = remainCount;
     }
 
 }
