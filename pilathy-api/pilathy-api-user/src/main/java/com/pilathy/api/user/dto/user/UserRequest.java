@@ -1,6 +1,7 @@
 package com.pilathy.api.user.dto.user;
 
 import com.pilathy.api.user.config.validator.Password;
+import com.pilathy.api.user.config.validator.Phone;
 import com.pilathy.domain.rds.domain.account.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class UserRequest {
 
     private LocalDate birthDate;
 
-    @Size(max = 15)
+    @Phone
     private String phone;
 
     public User toEntity() {
