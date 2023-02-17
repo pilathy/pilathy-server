@@ -6,6 +6,10 @@ public class UnAuthorizedException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E401_UNAUTHORIZED;
 
+    public UnAuthorizedException(ErrorCode errorCode) {
+        super(errorCode);
+    }
+
     public UnAuthorizedException(String message) {
         super(message, DEFAULT_ERROR_CODE);
     }

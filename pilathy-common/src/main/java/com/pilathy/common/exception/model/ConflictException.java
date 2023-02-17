@@ -6,12 +6,12 @@ public class ConflictException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E409_DUPLICATE;
 
-    public ConflictException(String message) {
-        super(message, DEFAULT_ERROR_CODE);
-    }
-
     public ConflictException(ErrorCode errorCode) {
         super(errorCode);
+    }
+
+    public ConflictException(String message) {
+        super(message, DEFAULT_ERROR_CODE);
     }
 
     public ConflictException(String message, ErrorCode errorCode) {

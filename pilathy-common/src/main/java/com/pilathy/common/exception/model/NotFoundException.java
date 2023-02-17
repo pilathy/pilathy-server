@@ -6,6 +6,10 @@ public class NotFoundException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E404_NOT_EXISTS;
 
+    public NotFoundException(ErrorCode errorCode) {
+        super(errorCode);
+    }
+
     public NotFoundException(String message) {
         super(message, DEFAULT_ERROR_CODE);
     }
