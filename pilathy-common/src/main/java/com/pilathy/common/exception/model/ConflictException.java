@@ -10,6 +10,10 @@ public class ConflictException extends PilathyBaseException {
         super(message, DEFAULT_ERROR_CODE);
     }
 
+    public ConflictException(ErrorCode errorCode) {
+        super(errorCode);
+    }
+
     public ConflictException(String message, ErrorCode errorCode) {
         super(message, errorCode);
     }
