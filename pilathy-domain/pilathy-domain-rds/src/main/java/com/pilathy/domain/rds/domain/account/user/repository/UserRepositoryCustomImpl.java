@@ -29,4 +29,12 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 .fetchFirst() != null;
     }
 
+    @Override
+    public User findUserByEmail(String userEmail) {
+        return queryFactory.selectFrom(user)
+                .where(
+                        user.email.eq(userEmail)
+                )
+                .fetchOne();
+    }
 }
