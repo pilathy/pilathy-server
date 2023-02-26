@@ -8,6 +8,11 @@ public abstract class PilathyBaseException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
+    protected PilathyBaseException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
+    }
+
     protected PilathyBaseException(String message, ErrorCode errorCode) {
         super(message);
         this.errorCode = errorCode;

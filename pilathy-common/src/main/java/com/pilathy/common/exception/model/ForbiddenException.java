@@ -6,6 +6,10 @@ public class ForbiddenException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E403_FORBIDDEN;
 
+    public ForbiddenException(ErrorCode errorCode) {
+        super(errorCode);
+    }
+
     public ForbiddenException(String message) {
         super(message, DEFAULT_ERROR_CODE);
     }

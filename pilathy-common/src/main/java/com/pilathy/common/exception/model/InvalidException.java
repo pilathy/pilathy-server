@@ -6,6 +6,10 @@ public class InvalidException extends PilathyBaseException {
 
     private static final ErrorCode DEFAULT_ERROR_CODE = ErrorCode.E400_INVALID;
 
+    public InvalidException(ErrorCode errorCode) {
+        super(errorCode);
+    }
+
     public InvalidException(String message) {
         super(message, DEFAULT_ERROR_CODE);
     }
