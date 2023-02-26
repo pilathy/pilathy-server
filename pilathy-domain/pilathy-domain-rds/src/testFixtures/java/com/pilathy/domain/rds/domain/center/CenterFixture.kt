@@ -13,14 +13,18 @@ object CenterFixture {
     @JvmStatic
     fun create(
             name: String = "Center${generateString()}",
-            address: Address = Address.of(generateString(10000, 99999), "서울", "어딘가"),
+            zipcode: String = generateString(10000, 99999),
+            defaultAddress: String = "경기 성남시 분당구 판교역로 166",
+            detailAddress: String = "카카오판교아지트 ${generateString(100, 999)}층",
             phone: String = generatePhone(),
             img: String = "Image${generateString()}",
             description: String = "Description${generateString()}",
             admin: Admin
     ): Center = Center.builder()
             .name(name)
-            .address(address)
+            .zipcode(zipcode)
+            .defaultAddress(defaultAddress)
+            .detailAddress(detailAddress)
             .phone(phone)
             .img(img)
             .description(description)
