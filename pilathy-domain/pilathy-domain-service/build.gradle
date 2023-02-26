@@ -1,0 +1,19 @@
+dependencies {
+    api project(":pilathy-domain:pilathy-domain-rds")
+
+    // Redis Session
+    api("org.springframework.session:spring-session-data-redis")
+
+    // TestFixtures
+    testImplementation(testFixtures(project(":pilathy-domain:pilathy-domain-rds")))
+    testImplementation(testFixtures(project(":pilathy-common")))
+
+    testFixturesImplementation(testFixtures(project(":pilathy-common")))
+}
+
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}

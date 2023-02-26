@@ -23,6 +23,10 @@ public abstract class PilathyBaseException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
+    public boolean isSetAlarm() {
+        return errorCode.isSendNotification();
+    }
+
     public int getStatus() {
         return errorCode.getStatus();
     }

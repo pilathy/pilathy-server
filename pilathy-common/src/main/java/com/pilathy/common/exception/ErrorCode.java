@@ -55,6 +55,14 @@ public enum ErrorCode {
      */
     E404_NOT_EXISTS(NOT_FOUND, false, "NF000", "존재하지 않습니다"),
     E404_NOT_EXISTS_USER(NOT_FOUND, false, "NF001", "탈퇴하거나 존재하지 않는 유저입니다"),
+    E404_NOT_EXISTS_CENTER(NOT_FOUND, false, "NF002", "삭제되거나 존재하지 않는 센터입니다"),
+    E404_NOT_EXISTS_MEMBERSHIP(NOT_FOUND, false, "NF003", "삭제되거나 존재하지 않는 멤버십입니다"),
+    E404_NOT_EXISTS_STORE_IMAGE(NOT_FOUND, false, "NF004", "삭제되거나 존재하지 않는 가게 이미지입니다"),
+    E404_NOT_EXISTS_FAQ(NOT_FOUND, false, "NF005", "삭제되거나 존재하지 않는 FAQ입니다"),
+    E404_NOT_EXISTS_MEDAL(NOT_FOUND, false, "NF006", "존재하지 않은 메달입니다"),
+    E404_NOT_EXISTS_USER_MEDAL(NOT_FOUND, false, "NF007", "보유하지 않은 메달입니다"),
+    E404_NOT_EXISTS_CATEGORY(NOT_FOUND, false, "NF008", "존재하지 않는 카테고리 입니다"),
+    E404_NOT_EXISTS_BOSS_ACCOUNT(NOT_FOUND, false, "NF009", "존재하지 않는 사장님 계정입니다"),
     E404_NOT_EXISTS_SIGNUP_REGISTRATION(NOT_FOUND, false, "NF010", "해당하는 가입 신청은 존재하지 않습니다"),
     E404_NOT_EXISTS_ADMIN(NOT_FOUND, false, "NF011", "해당하는 관리자는 존재하지 않습니다"),
 

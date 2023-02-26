@@ -1,6 +1,9 @@
 plugins {
     id "org.springframework.boot" version "2.5.14"
     id "io.spring.dependency-management" version "1.1.0"
+    id "org.jetbrains.kotlin.jvm" version "1.6.0"
+    id "org.jetbrains.kotlin.plugin.spring" version "1.6.0"
+    id "application"
 }
 
 ext {
@@ -32,13 +35,24 @@ subprojects {
     apply {
         plugin "idea"
         plugin "java-library"
+        plugin "kotlin"
         plugin "org.springframework.boot"
         plugin "io.spring.dependency-management"
+        plugin "org.jetbrains.kotlin.jvm"
+        plugin "org.jetbrains.kotlin.plugin.spring"
+        plugin "java-test-fixtures"
     }
 
     java {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_11
+            freeCompilerArgs = ["-Xjsr305=strict"]
+        }
     }
 
     dependencyManagement {
@@ -48,6 +62,10 @@ subprojects {
     }
 
     dependencies {
+        // Kotlin
+        implementation("org.jetbrains.kotlin:kotlin-stdlib")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+
         // Spring Boot Validation
         implementation("org.springframework.boot:spring-boot-starter-validation")
 
@@ -71,7 +89,7 @@ subprojects {
 
         // Jackson
         implementation("org.springframework.boot:spring-boot-starter-json")
-//        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
         // Test
         testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -80,10 +98,89 @@ subprojects {
         testImplementation("com.ninja-squad:springmockk:${springmockkVersion}")
     }
 
+    sourceSets {
+        integrationTest {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            java {
+                srcDirs file("src/integrationTest/java"), file("src/integrationTest/kotlin")
+            }
+            resources {
+                file("src/integrationTest/resources")
+            }
+        }
+
+        e2eTest {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            java {
+                srcDirs file("src/e2eTest/java"), file("src/e2eTest/kotlin")
+            }
+            resources {
+                file("src/e2eTest/resources")
+            }
+        }
+    }
+
     configurations {
         compileOnly {
             extendsFrom annotationProcessor
         }
+        integrationTestImplementation.extendsFrom implementation, testImplementation
+        integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+        integrationTestCompileOnly.extendsFrom testCompileOnly
+        integrationTestAnnotationProcessor.extendsFrom testAnnotationProcessor
+
+        e2eTestImplementation.extendsFrom testImplementation
+        e2eTestRuntimeOnly.extendsFrom testRuntimeOnly
+        e2eTestCompileOnly.extendsFrom testCompileOnly
+        e2eTestAnnotationProcessor.extendsFrom testAnnotationProcessor
     }
 
+    idea {
+        module {
+            testSourceDirs += sourceSets.integrationTest.java.srcDirs
+            testResourceDirs += sourceSets.integrationTest.resources.srcDirs
+
+            testSourceDirs += sourceSets.e2eTest.java.srcDirs
+            testResourceDirs += sourceSets.e2eTest.resources.srcDirs
+        }
+    }
+
+    task unitTest(type: Test, group: "verification", description: "Execute Unit Tests") {
+        useJUnitPlatform()
+    }
+
+    task integrationTest(type: Test, group: "verification", description: "Execute Integration Tests") {
+        testClassesDirs = sourceSets.integrationTest.output.classesDirs
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        useJUnitPlatform()
+
+        minHeapSize = "1G"
+        maxHeapSize = "1G"
+    }
+
+    task e2eTest(type: Test, group: "verification", description: "Execute E2E Tests") {
+        testClassesDirs = sourceSets.e2eTest.output.classesDirs
+        classpath = sourceSets.e2eTest.runtimeClasspath
+        useJUnitPlatform()
+
+        minHeapSize = "1G"
+        maxHeapSize = "1G"
+    }
+
+    test {
+        dependsOn unitTest
+        dependsOn integrationTest
+    }
+
+    tasks.withType(Test) {
+        useJUnitPlatform()
+        testLogging {
+            showExceptions = true
+            exceptionFormat = 'FULL'
+            showCauses = true
+            events = ['FAILED']
+        }
+    }
 }
