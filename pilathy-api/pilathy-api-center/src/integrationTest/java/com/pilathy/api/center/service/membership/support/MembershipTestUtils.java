@@ -1,4 +1,4 @@
-package com.pilathy.api.center.controller.membership.support;
+package com.pilathy.api.center.service.membership.support;
 
 import com.pilathy.api.center.service.membership.dto.response.MembershipResponse;
 import com.pilathy.common.TestUtils;

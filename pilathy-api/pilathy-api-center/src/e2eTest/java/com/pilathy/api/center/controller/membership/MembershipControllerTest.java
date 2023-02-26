@@ -7,10 +7,12 @@ import com.pilathy.api.center.service.membership.dto.request.MembershipRegisterR
 import com.pilathy.api.center.service.membership.dto.request.MembershipUpdateRequest;
 import com.pilathy.api.center.service.membership.dto.response.MembershipResponse;
 import com.pilathy.common.exception.ErrorCode;
+import com.pilathy.common.exception.model.NotFoundException;
 import com.pilathy.common.model.dto.response.ApiResponse;
 import com.pilathy.domain.rds.domain.membership.Membership;
 import com.pilathy.domain.rds.domain.membership.MembershipFixture;
 import com.pilathy.domain.rds.domain.membership.MembershipRepository;
+import com.pilathy.domain.service.service.membership.MembershipServiceHelper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.time.LocalDate;
 
 import static com.pilathy.common.lib.RandomGenerator.generateLong;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MembershipControllerTest extends PreparedMembershipControllerTest {
 
@@ -55,8 +59,8 @@ class MembershipControllerTest extends PreparedMembershipControllerTest {
             ApiResponse<MembershipResponse> response = membershipApiTestClient.registerMembership(request, user.getId(), center.getId(), HttpStatus.OK.value());
 
             //then
-            Membership membership = membershipRepository.findMembershipById(response.getData().getMembershipId());
-            MembershipTestUtils.assertMembershipResponse(response.getData(), membership);
+            Membership findMembership = assertDoesNotThrow(() -> MembershipServiceHelper.findMembershipById(membershipRepository, response.getData().getMembershipId()));
+            MembershipTestUtils.assertMembershipResponse(response.getData(), findMembership);
         }
 
         @Test
@@ -75,6 +79,7 @@ class MembershipControllerTest extends PreparedMembershipControllerTest {
             assertThat(response.getResultCode()).isEqualTo(ErrorCode.E400_INVALID_DATE_TIME_INTERVAL.getCode());
         }
 
+        // TODO: RegistMembershipRequest에 @Valid 달기 && 관련 실패 테스트
     }
 
     @DisplayName("PUT /v1/membership/{membershipId} : 멤버십 수정")
@@ -100,7 +105,7 @@ class MembershipControllerTest extends PreparedMembershipControllerTest {
             ApiResponse<MembershipResponse> response = membershipApiTestClient.updateMembership(request, membership.getId(), HttpStatus.OK.value());
 
             //then
-            Membership findMembership = membershipRepository.findMembershipById(response.getData().getMembershipId());
+            Membership findMembership = assertDoesNotThrow(() -> MembershipServiceHelper.findMembershipById(membershipRepository, response.getData().getMembershipId()));
             MembershipTestUtils.assertMembershipResponse(response.getData(), findMembership);
         }
 
@@ -159,7 +164,8 @@ class MembershipControllerTest extends PreparedMembershipControllerTest {
             membershipApiTestClient.deleteMembership(membership.getId(), HttpStatus.OK.value());
 
             //then
-            MembershipTestUtils.assertMembershipDeleteResponse(membershipRepository.findMembershipById(membershipId));
+            NotFoundException exception = assertThrows(NotFoundException.class, () -> MembershipServiceHelper.findMembershipById(membershipRepository, membershipId));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.E404_NOT_EXISTS_MEMBERSHIP);
         }
 
         @Test

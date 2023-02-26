@@ -4,11 +4,14 @@ import com.pilathy.api.center.PreparedMembershipIntegrationTest;
 import com.pilathy.api.center.service.membership.dto.request.MembershipRegisterRequest;
 import com.pilathy.api.center.service.membership.dto.request.MembershipUpdateRequest;
 import com.pilathy.api.center.service.membership.dto.response.MembershipResponse;
+import com.pilathy.api.center.service.membership.support.MembershipTestUtils;
+import com.pilathy.common.exception.ErrorCode;
 import com.pilathy.common.exception.model.InvalidException;
 import com.pilathy.common.exception.model.NotFoundException;
 import com.pilathy.domain.rds.domain.membership.Membership;
 import com.pilathy.domain.rds.domain.membership.MembershipFixture;
 import com.pilathy.domain.rds.domain.membership.MembershipRepository;
+import com.pilathy.domain.service.service.membership.MembershipServiceHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,8 +21,7 @@ import java.time.LocalDate;
 
 import static com.pilathy.common.lib.RandomGenerator.generateLong;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MembershipServiceTest extends PreparedMembershipIntegrationTest {
 
@@ -46,14 +48,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
             MembershipResponse response = membershipService.registerMembership(request, user.getId(), center.getId());
 
             //then
-            Membership membership = membershipRepository.findMembershipById(response.getMembershipId());
-            assertAll(
-                    () -> assertThat(response.getStartDate()).isEqualTo(membership.getDateInterval().getStartDate()),
-                    () -> assertThat(response.getEndDate()).isEqualTo(membership.getDateInterval().getEndDate()),
-                    () -> assertThat(response.getRemainCount()).isEqualTo(membership.getRemainCount()),
-                    () -> assertThat(response.getUserId()).isEqualTo(user.getId()),
-                    () -> assertThat(response.getCenterId()).isEqualTo(center.getId())
-            );
+            Membership findMembership = MembershipServiceHelper.findMembershipById(membershipRepository, response.getMembershipId());
+            MembershipTestUtils.assertMembershipResponse(response, findMembership);
         }
 
         @Test
@@ -66,8 +62,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
                     .build();
 
             //when & then
-            assertThatThrownBy(() -> membershipService.registerMembership(request, user.getId(), center.getId()))
-                    .isInstanceOf(InvalidException.class);
+            InvalidException exception = assertThrows(InvalidException.class, () -> membershipService.registerMembership(request, user.getId(), center.getId()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.E400_INVALID_DATE_TIME_INTERVAL);
         }
 
         @Test
@@ -80,8 +76,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
                     .build();
 
             //when & then
-            assertThatThrownBy(() -> membershipService.registerMembership(request, user.getId() + generateLong(), center.getId()))
-                    .isInstanceOf(NotFoundException.class);
+            NotFoundException exception = assertThrows(NotFoundException.class, () -> membershipService.registerMembership(request, user.getId() + generateLong(), center.getId()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.E404_NOT_EXISTS_USER);
         }
 
         @Test
@@ -94,8 +90,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
                     .build();
 
             //when & then
-            assertThatThrownBy(() -> membershipService.registerMembership(request, user.getId(), center.getId() + generateLong()))
-                    .isInstanceOf(NotFoundException.class);
+            NotFoundException exception = assertThrows(NotFoundException.class, () -> membershipService.registerMembership(request, user.getId(), center.getId() + generateLong()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.E404_NOT_EXISTS_CENTER);
         }
 
     }
@@ -120,11 +116,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
             MembershipResponse response = membershipService.updateMembership(request, membership.getId());
 
             //then
-            Membership updatedMembership = membershipRepository.findMembershipById(membership.getId());
-            assertAll(
-                    () -> assertThat(response.getEndDate()).isEqualTo(updatedMembership.getDateInterval().getEndDate()),
-                    () -> assertThat(response.getRemainCount()).isEqualTo(updatedMembership.getRemainCount())
-            );
+            Membership findMembership = MembershipServiceHelper.findMembershipById(membershipRepository, response.getMembershipId());
+            MembershipTestUtils.assertMembershipResponse(response, findMembership);
         }
 
         @Test
@@ -140,8 +133,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
                     .build();
 
             //when & then
-            assertThatThrownBy(() -> membershipService.updateMembership(request, membership.getId()))
-                    .isInstanceOf(InvalidException.class);
+            InvalidException exception = assertThrows(InvalidException.class, () -> membershipService.updateMembership(request, membership.getId()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.E400_INVALID_DATE_TIME_INTERVAL);
         }
 
         @Test
@@ -157,8 +150,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
                     .build();
 
             //when & then
-            assertThatThrownBy(() -> membershipService.updateMembership(request, membership.getId() + generateLong()))
-                    .isInstanceOf(NotFoundException.class);
+            NotFoundException exception = assertThrows(NotFoundException.class, () -> membershipService.updateMembership(request, membership.getId() + generateLong()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.E404_NOT_EXISTS_MEMBERSHIP);
         }
 
         // TODO: 멤버십 수정 파라미터에 admin 추가해야함
@@ -189,8 +182,8 @@ class MembershipServiceTest extends PreparedMembershipIntegrationTest {
             membershipRepository.save(membership);
 
             //when & then
-            assertThatThrownBy(() -> membershipService.deleteMembership(membership.getId() + generateLong()))
-                    .isInstanceOf(NotFoundException.class);
+            NotFoundException exception = assertThrows(NotFoundException.class, () -> membershipService.deleteMembership(membership.getId() + generateLong()));
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.E404_NOT_EXISTS_MEMBERSHIP);
         }
 
     }
