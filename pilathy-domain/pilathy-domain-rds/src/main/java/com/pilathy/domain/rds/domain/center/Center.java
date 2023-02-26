@@ -33,7 +33,8 @@ public class Center extends BaseEntity {
 
     private String description;
 
-    @OneToOne(mappedBy = "center")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
     @OneToMany(mappedBy = "center")
@@ -46,29 +47,31 @@ public class Center extends BaseEntity {
     private List<Membership> memberships = new ArrayList<>();
 
     @Builder(access = AccessLevel.PACKAGE)
-    private Center(Admin admin, String name, Address address, String phone, String img, String description) {
+    private Center(Admin admin, String name, String zipcode, String defaultAddress, String detailAddress, String phone, String img, String description) {
         this.admin = admin;
         this.name = name;
-        this.address = address;
+        this.address = Address.of(zipcode, defaultAddress, detailAddress);
         this.phone = phone;
         this.img = img;
         this.description = description;
     }
 
-    public static Center of(Admin admin, String name, Address address, String phone, String img, String description) {
+    public static Center of(Admin admin, String name, String zipcode, String defaultAddress, String detailAddress, String phone, String img, String description) {
         return Center.builder()
                 .admin(admin)
                 .name(name)
-                .address(address)
+                .zipcode(zipcode)
+                .defaultAddress(defaultAddress)
+                .detailAddress(detailAddress)
                 .phone(phone)
                 .img(img)
                 .description(description)
                 .build();
     }
 
-    public void updateCenter(String name, Address address, String phone, String img, String description) {
+    public void updateCenter(String name, String zipcode, String defaultAddress, String detailAddress, String phone, String img, String description) {
         this.name = name;
-        this.address = address;
+        this.address = Address.of(zipcode, defaultAddress, detailAddress);
         this.phone = phone;
         this.img = img;
         this.description = description;

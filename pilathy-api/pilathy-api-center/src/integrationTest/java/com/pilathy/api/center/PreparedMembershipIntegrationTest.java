@@ -29,14 +29,13 @@ public class PreparedMembershipIntegrationTest extends IntegrationTest {
 
     @BeforeEach
     void setup() {
-        User createUser = UserFixture.create();
-        Admin createAdmin = AdminFixture.create();
-        Center createCenter = CenterFixture.create(createAdmin);
-        createAdmin.connectCenter(createCenter);
+        user = UserFixture.create();
+        admin = AdminFixture.create();
+        center = CenterFixture.create(admin);
 
-        user = userRepository.save(createUser);
-        admin = adminRepository.save(createAdmin);
-        center = centerRepository.save(createCenter);
+        userRepository.save(user);
+        adminRepository.save(admin);
+        centerRepository.save(center);
     }
 
 }
