@@ -1,6 +1,7 @@
 package com.pilathy.api.center.service.membership.dto.response;
 
 import com.pilathy.domain.rds.domain.membership.Membership;
+import com.pilathy.domain.service.common.dto.response.AuditingTimeResponse;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MembershipResponse {
+public class MembershipResponse extends AuditingTimeResponse {
 
     private Long membershipId;
 
@@ -41,8 +42,7 @@ public class MembershipResponse {
                 .endDate(membership.getDateInterval().getEndDate())
                 .remainCount(membership.getRemainCount())
                 .build();
-        // TODO: domain-service 만들기
-//        response.setAuditingTimeByEntity(membership);
+        response.setAuditingTimeByEntity(membership);
         return response;
     }
 }
