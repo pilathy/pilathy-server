@@ -32,7 +32,6 @@ public abstract class PreparedMembershipControllerTest extends ControllerTest {
         user = UserFixture.create();
         admin = AdminFixture.create();
         center = CenterFixture.create(admin);
-        admin.connectCenter(center);
 
         userRepository.save(user);
         adminRepository.save(admin);

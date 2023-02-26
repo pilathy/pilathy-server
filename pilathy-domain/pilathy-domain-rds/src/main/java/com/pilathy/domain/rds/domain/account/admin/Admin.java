@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,9 +22,8 @@ public class Admin extends BaseEntity {
 
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "center_id", unique = true)
-    private Center center;
+    @OneToMany(mappedBy = "admin")
+    private List<Center> centers = new ArrayList<>();
 
     @Builder(access = AccessLevel.PACKAGE)
     private Admin(String email, String password) {
@@ -35,10 +36,6 @@ public class Admin extends BaseEntity {
                 .email(email)
                 .password(password)
                 .build();
-    }
-
-    public void connectCenter(Center center) {
-        this.center = center;
     }
 
 }
