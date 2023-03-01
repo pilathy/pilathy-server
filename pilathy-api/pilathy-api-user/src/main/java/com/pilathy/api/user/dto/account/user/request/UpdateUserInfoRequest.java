@@ -1,10 +1,7 @@
-package com.pilathy.api.user.dto.user;
+package com.pilathy.api.user.dto.account.user.request;
 
 import com.pilathy.api.user.config.validator.Phone;
-import com.pilathy.domain.rds.domain.account.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,8 +10,9 @@ import java.time.LocalDate;
 
 @ToString
 @Getter
-@AllArgsConstructor
-public class UserResponse {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class UpdateUserInfoRequest {
+
     @Email
     private String email;
 
@@ -27,7 +25,12 @@ public class UserResponse {
     @Phone
     private String phone;
 
-    public static UserResponse of(User user) {
-        return new UserResponse(user.getEmail(), user.getName(), user.getBirthDate(), user.getPhone());
+    @Builder
+    private UpdateUserInfoRequest(String email, String name, LocalDate birthDate, String phone) {
+        this.email = email;
+        this.name = name;
+        this.birthDate = birthDate;
+        this.phone = phone;
     }
+
 }

@@ -55,4 +55,15 @@ public class User extends BaseEntity {
                 .build();
     }
 
+    public void updateUserInfo(String email, String name, LocalDate birthDate, String phone) {
+        this.email = Email.of(email);
+        this.name = name;
+        this.birthDate = birthDate;
+        this.phone = phone;
+    }
+
+    public void updateUserPassword(String password) {
+        this.password = password;
+    }
+
 }

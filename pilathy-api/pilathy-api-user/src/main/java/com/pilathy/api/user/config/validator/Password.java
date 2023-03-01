@@ -16,6 +16,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Password {
+
     String message() default "비밀번호 형식을 확인해주세요.";
 
     String pattern() default "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
