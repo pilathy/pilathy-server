@@ -1,13 +1,16 @@
 dependencies {
-    api project(":pilathy-common")
-    api project(":pilathy-domain:pilathy-domain-rds")
+    api project(":pilathy-domain:pilathy-domain-service")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 task prepareKotlinBuildScriptModel {
+}
 
+application {
+    mainClass.set("com.pilathy.api.center.PilathyApiUserApplication")
 }
 
 bootJar {

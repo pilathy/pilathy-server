@@ -6,7 +6,7 @@ public interface UserRepositoryCustom {
 
     User findUserById(Long userId);
 
-    boolean existsUserByEmail(String userEmail);
+    boolean existsUserByEmail(String email);
 
-    User findUserByEmail(String userEmail);
+    User findUserByEmail(String email);
 }

@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+
     @ExceptionHandler(PilathyBaseException.class)
     public ResponseEntity<ApiResponse<Object>> customExceptionHandle(PilathyBaseException e) {
         log.error(e.getErrorCode().getMessage(), e);
         return ResponseEntity.status(e.getStatus())
                 .body(ApiResponse.error(e.getErrorCode()));
     }
+
 }

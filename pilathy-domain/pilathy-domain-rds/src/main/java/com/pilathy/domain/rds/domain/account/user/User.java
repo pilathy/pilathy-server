@@ -1,6 +1,7 @@
 package com.pilathy.domain.rds.domain.account.user;
 
 import com.pilathy.domain.rds.domain.common.BaseEntity;
+import com.pilathy.domain.rds.domain.common.Email;
 import com.pilathy.domain.rds.domain.membership.Membership;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,8 +20,8 @@ import java.util.List;
 @Entity
 public class User extends BaseEntity {
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String email;
+    @Column(nullable = false, length = 50)
+    private Email email;
 
     private String password;
 
@@ -35,9 +36,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Membership> memberships = new ArrayList<>();
 
-    @Builder(access = AccessLevel.PRIVATE)
+    @Builder(access = AccessLevel.PACKAGE)
     private User(String email, String password, String name, LocalDate birthDate, String phone) {
-        this.email = email;
+        this.email = Email.of(email);
         this.password = password;
         this.name = name;
         this.birthDate = birthDate;
@@ -52,6 +53,17 @@ public class User extends BaseEntity {
                 .birthDate(birthDate)
                 .phone(phone)
                 .build();
+    }
+
+    public void updateUserInfo(String email, String name, LocalDate birthDate, String phone) {
+        this.email = Email.of(email);
+        this.name = name;
+        this.birthDate = birthDate;
+        this.phone = phone;
+    }
+
+    public void updateUserPassword(String password) {
+        this.password = password;
     }
 
 }
